@@ -1,44 +1,137 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { supabase } from '../client';
+import { useNavigate, Link } from 'react-router-dom'
+import { supabase } from '../client'
+import './CreateCar.css'
 
-export default function CreateCar() {
-  const [name, setName] = useState('')
-  const [team, setTeam] = useState('')
-  const [engine, setEngine] = useState('')
-  const [topSpeed, setTopSpeed] = useState('')
+function CreateCar() {
+  const [carData, setCarData] = useState({
+    name: '',
+    team: '',
+    engine: '',
+    topSpeed: ''
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
+  const handleChange = (e) => {
+    const { id, value } = e.target
+    setCarData(prev => ({
+      ...prev,
+      [id]: value
+    }))
+  }
+
   const handleSubmit = async (e) => {
-		e.preventDefault();
-	
-		const { error } = await supabase.from('f1cars').insert([
-			{
-				name,
-				team,
-				engine,
-				top_speed: parseFloat(topSpeed),
-			},
-		]);
-	
-		if (error) {
-			console.error("Insert failed:", error.message);
-		} else {
-			navigate('/');
-		}
-	};
-	
+    e.preventDefault()
+    
+    const { name, team, engine, topSpeed } = carData
+    
+    if (!name || !team || !engine || !topSpeed) {
+      setError('Please fill in all fields')
+      return
+    }
+    
+    try {
+      setLoading(true)
+      setError(null)
+      
+      const { error: supabaseError } = await supabase.from('f1cars').insert([
+        {
+          name,
+          team,
+          engine,
+          top_speed: parseFloat(topSpeed),
+        },
+      ])
+    
+      if (supabaseError) {
+        setError(`Insert failed: ${supabaseError.message}`)
+      } else {
+        navigate('/')
+      }
+    } catch (err) {
+      setError('An unexpected error occurred')
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Add a New F1 Car</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="text" placeholder="Car Name" value={name} onChange={e => setName(e.target.value)} className="border p-2 w-full" />
-        <input type="text" placeholder="Team" value={team} onChange={e => setTeam(e.target.value)} className="border p-2 w-full" />
-        <input type="text" placeholder="Engine Type" value={engine} onChange={e => setEngine(e.target.value)} className="border p-2 w-full" />
-        <input type="number" placeholder="Top Speed" value={topSpeed} onChange={e => setTopSpeed(e.target.value)} className="border p-2 w-full" />
-        <button className="bg-green-600 text-white px-4 py-2 rounded">Add Car</button>
+    <div className="create-car-container">
+      <h1 className="create-car-title">Add a New F1 Car</h1>
+      
+      {error && (
+        <div className="create-car-error">
+          {error}
+        </div>
+      )}
+      
+      <form onSubmit={handleSubmit} className="create-car-form">
+        <div className="form-group">
+          <label htmlFor="name" className="form-label">Car Name</label>
+          <input 
+            id="name"
+            type="text" 
+            placeholder="Car Name" 
+            value={carData.name} 
+            onChange={handleChange} 
+            className="form-input" 
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="team" className="form-label">Team</label>
+          <input 
+            id="team"
+            type="text" 
+            placeholder="Team" 
+            value={carData.team} 
+            onChange={handleChange} 
+            className="form-input" 
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="engine" className="form-label">Engine Type</label>
+          <input 
+            id="engine"
+            type="text" 
+            placeholder="Engine Type" 
+            value={carData.engine} 
+            onChange={handleChange} 
+            className="form-input" 
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="topSpeed" className="form-label">Top Speed (km/h)</label>
+          <input 
+            id="topSpeed"
+            type="number" 
+            placeholder="Top Speed" 
+            value={carData.topSpeed} 
+            onChange={handleChange} 
+            className="form-input" 
+          />
+        </div>
+        
+        <div className="form-actions">
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="create-button"
+          >
+            {loading ? 'Adding...' : 'Add Car'}
+          </button>
+          <Link to="/" className="cancel-button">
+            Cancel
+          </Link>
+        </div>
       </form>
     </div>
   )
 }
+
+export default CreateCar
