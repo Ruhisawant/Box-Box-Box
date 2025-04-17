@@ -24,13 +24,13 @@ function Navbar() {
             </Link>
           </li>
           <li className="navbar-item">
-            <Link to="/create" className={isActive('/create')}>
-              <Plus className="icon" /> Add Member
+            <Link to="/gallery" className={isActive('/gallery')}>
+              <UsersRound className="icon" /> Team
             </Link>
           </li>
           <li className="navbar-item">
-            <Link to="/gallery" className={isActive('/gallery')}>
-              <UsersRound className="icon" /> Team
+            <Link to="/create" className={isActive('/create')}>
+              <Plus className="icon" /> Add Member
             </Link>
           </li>
           <li className="navbar-item">

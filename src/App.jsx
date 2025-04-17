@@ -2,8 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import CreateMember from './pages/CreateMember';
-import MemberGallery from './pages/MemberGallery';
+import TeamGallery from './pages/TeamGallery';
 import MemberDetails from './components/MemberDetails';
+import Footer from './components/Footer';
 import './App.css';
 
 function App() {
@@ -13,9 +14,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<CreateMember />} />
-        <Route path="/gallery" element={<MemberGallery />} />
+        <Route path="/gallery" element={<TeamGallery />} />
         <Route path="/car/:id" element={<MemberDetails />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }

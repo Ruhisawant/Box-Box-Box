@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Search, Plus, Funnel, UsersRound, ArrowDownUp } from 'lucide-react';
 import { supabase } from '../supabase';
-import './MemberGallery.css';
+import './TeamGallery.css';
 
-function TeamMemberGallery() {
+function TeamGallery() {
   const [members, setMembers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRole, setSelectedRole] = useState('All');
+  const [sortOrder, setSortOrder] = useState('newest');
 
   useEffect(() => {
     const fetchTeamMembers = async () => {
@@ -14,58 +16,102 @@ function TeamMemberGallery() {
         const { data, error } = await supabase
           .from('team_members')
           .select('*')
-          
         if (error) throw error;
-        
         setMembers(data || []);
       } catch (error) {
-        setError('Error fetching team members: ' + error.message);
-      } finally {
-        setIsLoading(false);
+        'Error fetching team members: ' + error
       }
     };
-    
     fetchTeamMembers();
   }, []);
 
   // Function to get role-specific icon class
   const getRoleIconClass = (role) => {
     switch(role) {
-      case 'Driver':
-        return 'role-icon-driver';
-      case 'Engineer':
-        return 'role-icon-engineer';
-      case 'Mechanic':
-        return 'role-icon-mechanic';
-      case 'Strategist':
-        return 'role-icon-strategist';
-      case 'Team Principal':
-        return 'role-icon-principal';
-      case 'Technical Director':
-        return 'role-icon-technical';
-      default:
-        return 'role-icon-default';
+      case 'Driver': return 'icon-driver';
+      case 'Engineer': return 'icon-engineer';
+      case 'Mechanic': return 'icon-mechanic';
+      case 'Strategist': return 'icon-strategist';
+      case 'Team Principal': return 'icon-principal';
+      case 'Technical Director': return 'icon-technical';
+      default: return 'icon-default';
     }
   };
 
+  const filteredMembers = members
+    .filter(member =>
+      member.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      (selectedRole === 'All' || member.role === selectedRole)
+    )
+    .sort((a, b) =>
+      sortOrder === 'newest'
+        ? new Date(b.created_at) - new Date(a.created_at)
+        : new Date(a.created_at) - new Date(b.created_at)
+    );
+
   return (
-    <div className="gallery-container">
-      <div className="gallery-header">
-        <h2>Your F1 Team Members</h2>
-        <Link to="/create-member" className="create-link">+ Add Team Member</Link>
+    <div className="body">
+      <div className="header-content">
+        <div className="header-text">
+          <h2>Your Team</h2>
+          <p>Manage your team members and their roles</p>
+        </div>
+        <Link to="/create" className="btn"><Plus className="icon" /> Add Team Member</Link>
       </div>
-      
-      {error && <div className="error-message">{error}</div>}
-      
-      {isLoading ? (
-        <div className="loading">Loading your team roster...</div>
-      ) : members.length === 0 ? (
+
+      <div className="filters-section">
+        <div className="filter-group">
+          <Search className="icon" />
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="filter-input"
+          />
+        </div>
+
+        <div className="filter-group">
+          <Funnel className="icon" />
+          <select
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
+            className="filter-select"
+          >
+            <option value="All">All Roles</option>
+            <option value="Driver">Driver</option>
+            <option value="Engineer">Engineer</option>
+            <option value="Mechanic">Mechanic</option>
+            <option value="Strategist">Strategist</option>
+            <option value="Team Principal">Team Principal</option>
+            <option value="Technical Director">Technical Director</option>
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <ArrowDownUp className="icon" />
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            className="filter-select"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+      </div>
+
+
+      {members.length === 0 ? (
         <div className="empty-gallery">
-          <p>Your team has no members yet! Add your first team member to get started.</p>
-          <Link to="/create-member" className="btn btn-primary">Add Your First Team Member</Link>
+          <UsersRound size={48} />
+          <p>No team members yet</p>
+          <Link to="/create" className="btn">
+            <Plus className="icon" /> Add Your First Team Member
+          </Link>
         </div>
       ) : (
-        <div className="members-grid">
+        <div className="members-section">
           {members.map(member => (
             <Link to={`/team-member/${member.id}`} key={member.id} className="member-card">
               <div className={`member-role-indicator ${getRoleIconClass(member.role)}`}>
@@ -182,4 +228,4 @@ function TeamMemberGallery() {
   );
 }
 
-export default TeamMemberGallery;
+export default TeamGallery;

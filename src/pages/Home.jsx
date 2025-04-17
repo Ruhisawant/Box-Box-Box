@@ -5,19 +5,20 @@ import './Home.css';
 function Home() {
   return (
     <div className="body">
-      <div className="header-content">
-        <h1>Build Your <span>Ultimate</span> F1 Team</h1>
-        <p>Assemble the perfect Formula 1 team by customizing drivers, engineers, mechanics, and more. Optimize your team's performance to dominate the racing world.</p>
-      
-        <div className="buttons">
-          <Link to="/create" className="btn primary"><Plus className="icon" /> Add Team Member</Link>
-          <Link to="/gallery" className="btn secondary"><UsersRound className="icon" /> View Team</Link>
-        </div>
-      </div>
+      <div className="home-top">
+        <div className="header-content">
+          <h1>Build Your <span>Ultimate</span> F1 Team</h1>
+          <p>Assemble the perfect Formula 1 team by customizing drivers, engineers, mechanics, and more. Optimize your team's performance to dominate the racing world.</p>
 
-      <div className='performance-section'>
-        {/* to be made */}
-        <div className="container">Team Performance</div>
+          <div className="buttons">
+            <Link to="/create" className="btn primary"><Plus className="icon" /> Add Team Member</Link>
+            <Link to="/gallery" className="btn secondary"><UsersRound className="icon" /> View Team</Link>
+          </div>
+        </div>
+
+        <div className="performance-section">
+          <div className="container">Team Performance</div>
+        </div>
       </div>
 
       <div className="members-section">

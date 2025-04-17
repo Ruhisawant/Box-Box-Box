@@ -25,10 +25,6 @@
   transition: color 0.3s;
 }
 
-.navbar-logo:hover {
-  color: #ff3b3b;
-}
-
 .symbol {
   background-color: #e50215;
   color: #fff;
@@ -81,6 +77,11 @@
 
 .nav-link-active {
   background-color: #e50215;
+  color: #fff;
+}
+
+.nav-link-active:hover {
+  background-color: #c80b18;
   color: #fff;
 }
 
