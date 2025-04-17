@@ -1,0 +1,257 @@
+.create-team-member-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.create-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.create-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.team-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.team-link:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.team-link::before {
+  content: "←";
+  margin-right: 8px;
+}
+
+.error-message {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.team-member-layout {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.team-member-form {
+  padding: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: #f9fafb;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+.option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.option-btn {
+  padding: 8px 16px;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.option-btn.selected {
+  background-color: #3b82f6;
+  border-color: #2563eb;
+  color: white;
+}
+
+.attributes-section {
+  margin-top: 30px;
+}
+
+.attributes-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+.attribute-sliders {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.attribute-slider {
+  display: flex;
+  flex-direction: column;
+}
+
+.attribute-slider label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #4b5563;
+}
+
+.attribute-slider input[type="range"] {
+  width: 100%;
+  margin-bottom: 6px;
+  -webkit-appearance: none;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  outline: none;
+}
+
+.attribute-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.attribute-slider input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.attribute-value {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 14px;
+  align-self: flex-end;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.cancel-btn {
+  padding: 10px 16px;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #2563eb;
+}
+
+.submit-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .create-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .option-buttons {
+    flex-direction: column;
+  }
+  
+  .option-btn {
+    width: 100%;
+  }
+  
+  .attribute-sliders {
+    grid-template-columns: 1fr;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .cancel-btn, .submit-btn {
+    width: 100%;
+  }
+}

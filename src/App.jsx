@@ -1,26 +1,28 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import CreateCar from './pages/CreateCar'
-import CarDetails from './components/CarDetails'
-import EditCar from './components/EditCar'
-import Home from './pages/Home'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import CreateMember from './pages/CreateMember';
+import MemberGallery from './pages/MemberGallery';
+import MemberDetails from './components/MemberDetails';
+import './App.css';
 
 function App() {
   return (
     <Router>
-      <Navbar />
-      <div className='container mx-auto'>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/create' element={<CreateCar />} />
-          <Route path='/car/:id' element={<CarDetails />} />
-          <Route path='/edit/:id' element={<EditCar />} />
-        </Routes>
+      <div className="App">
+        <header className="App-header">
+          <h1>F1 Team Manager</h1>
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/create" element={<CreateMember />} />
+            <Route path="/gallery" element={<MemberGallery />} />
+            <Route path="/car/:id" element={<MemberDetails />} />
+          </Routes>
+        </main>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

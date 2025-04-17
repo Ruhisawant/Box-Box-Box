@@ -1,0 +1,247 @@
+.gallery-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.gallery-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.create-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: #3b82f6;
+  border-radius: 4px;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.create-link:hover {
+  background-color: #2563eb;
+}
+
+.error-message {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px 0;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.empty-gallery {
+  text-align: center;
+  padding: 60px 0;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 2px dashed #d1d5db;
+}
+
+.empty-gallery p {
+  font-size: 18px;
+  color: #4b5563;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3b82f6;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.member-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.member-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.member-role-indicator {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+/* Role-specific color coding */
+.role-icon-driver {
+  background-color: #ef4444;
+}
+
+.role-icon-engineer {
+  background-color: #3b82f6;
+}
+
+.role-icon-mechanic {
+  background-color: #10b981;
+}
+
+.role-icon-strategist {
+  background-color: #8b5cf6;
+}
+
+.role-icon-principal {
+  background-color: #f59e0b;
+}
+
+.role-icon-technical {
+  background-color: #6366f1;
+}
+
+.role-icon-default {
+  background-color: #6b7280;
+}
+
+.member-info {
+  padding: 16px;
+}
+
+.member-info h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.member-details {
+  margin-bottom: 16px;
+}
+
+.detail {
+  display: flex;
+  margin-bottom: 6px;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #6b7280;
+  width: 100px;
+}
+
+.detail-value {
+  color: #1f2937;
+}
+
+.attribute-highlights {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+  margin-bottom: 12px;
+}
+
+.attribute {
+  margin-bottom: 8px;
+}
+
+.attribute-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.attribute-bar {
+  width: 100%;
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.attribute-fill {
+  height: 100%;
+  background-color: #3b82f6;
+  border-radius: 3px;
+}
+
+.attribute-fill.highlight {
+  background-color: #f59e0b;
+}
+
+.member-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.member-date {
+  color: #6b7280;
+}
+
+.edit-button {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  color: #4b5563;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.edit-button:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+  color: #1f2937;
+}
+
+@media (max-width: 768px) {
+  .gallery-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .members-grid {
+    grid-template-columns: 1fr;
+  }
+}

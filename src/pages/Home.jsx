@@ -1,87 +1,34 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { supabase } from '../client'
-import './Home.css'
+import { Link } from 'react-router-dom';
+import './Home.css';
 
 function Home() {
-  const [cars, setCars] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    fetchCars()
-  }, [])
-
-  const fetchCars = async () => {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase
-        .from('f1cars')
-        .select('*')
-        .order('created_at', { ascending: false })
-      
-      if (error) {
-        console.error('Error fetching cars:', error)
-        setError('Failed to fetch cars')
-        return
-      }
-      
-      setCars(data || [])
-    } catch (error) {
-      console.error('Unexpected error:', error)
-      setError('An unexpected error occurred')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <div className="home-container">
-      <div className="home-header">
-        <h1 className="home-title">Your F1 Team</h1>
-        <Link to='/create' className="home-add-button">
-          Add New Car
-        </Link>
+      <div className="hero-section">
+        <h1>Build Your Championship F1 Team</h1>
+        <p>Create, customize and manage your own Formula 1 racing team!</p>
+        <div className="hero-buttons">
+          <Link to="/create" className="btn btn-primary">Create New Car</Link>
+          <Link to="/gallery" className="btn btn-secondary">View Your Team</Link>
+        </div>
       </div>
       
-      {error && (
-        <div className="home-error-message">
-          {error}
+      <div className="features-section">
+        <div className="feature">
+          <h3>Design Custom Cars</h3>
+          <p>Configure engine power, aerodynamics, tire compound and more!</p>
         </div>
-      )}
-      
-      {loading ? (
-        <p className="home-loading">Loading cars...</p>
-      ) : cars.length === 0 ? (
-        <div className="home-empty-state">
-          <p className="home-empty-message">No cars added yet. Create your first F1 car!</p>
-          <Link to="/create" className="home-create-button">
-            Create Car
-          </Link>
+        <div className="feature">
+          <h3>Build Your Dream Team</h3>
+          <p>Assemble a diverse fleet of racing cars to dominate every track.</p>
         </div>
-      ) : (
-        <ul className="car-grid">
-          {cars.map(car => (
-            <li key={car.id} className="car-card">
-              <Link to={`/car/${car.id}`} className="car-link">
-                <h2 className="car-name">{car.name}</h2>
-                <p className="car-team">{car.team}</p>
-                <div className="car-details">
-                  <p className="car-speed">Top Speed: {car.top_speed} km/h</p>
-                  <p className="car-engine">{car.engine}</p>
-                </div>
-              </Link>
-              <div className="car-actions">
-                <Link to={`/edit/${car.id}`} className="car-edit-link">
-                  Edit
-                </Link>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+        <div className="feature">
+          <h3>Track Performance</h3>
+          <p>Monitor and optimize your team's strengths and weaknesses.</p>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
