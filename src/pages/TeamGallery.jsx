@@ -113,13 +113,13 @@ function TeamGallery() {
         </div>
       ) : (
         <div className="members-section">
-          {members.map(member => (
-            <Link to={`/team-member/${member.id}`} key={member.id} className="member-card">
-              <div className={`member-role-indicator ${getRoleIconClass(member.role)}`}>
-                {member.role}
-              </div>
-              <div className="member-info">
-                <h3>{member.name}</h3>
+          {filteredMembers.map(member => (
+            <div key={member.id} className="member-card">
+            <div className={`member-role-indicator ${getRoleIconClass(member.role)}`}>
+              {member.role}
+            </div>
+            <div className="member-info">
+              <h3>{member.name}</h3>
                 <div className="member-details">
                   <div className="detail">
                     <span className="detail-label">Nationality:</span>
@@ -215,13 +215,16 @@ function TeamGallery() {
                     {member.created_at && new Date(member.created_at).toLocaleDateString()}
                   </span>
                   <div className="member-actions">
-                    <Link to={`/update-member/${member.id}`} className="edit-button" onClick={(e) => e.stopPropagation()}>
+                    <Link to={`/member-details/${member.id}`} className="view-button">
+                      View
+                    </Link>
+                    <Link to={`/edit-member/${member.id}`} className="edit-button">
                       Edit
                     </Link>
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}

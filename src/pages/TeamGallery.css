@@ -68,130 +68,142 @@
   color: #9ca4ae;
 }
 
-/* why is this not overridding */
-.container {
-  background-color: 121821;
-  text-align: center;
-}
-
 .members-section {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
+  margin-top: 16px;
 }
 
 .member-card {
-  background-color: white;
-  border-radius: 8px;
+  background-color: #1e293b;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  border: 1px solid #2d3748;
 }
 
 .member-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-color: #4b5563;
 }
 
 .member-role-indicator {
-  padding: 8px 16px;
+  padding: 10px 16px;
   font-size: 14px;
   font-weight: 600;
   color: white;
+  letter-spacing: 0.5px;
 }
 
-/* Role-specific color coding — match the JSX function */
+/* Role-specific color coding */
 .icon-driver {
   background-color: #ef4444;
+  background-image: linear-gradient(90deg, #ef4444, #b91c1c);
 }
 
 .icon-engineer {
   background-color: #3b82f6;
+  background-image: linear-gradient(90deg, #3b82f6, #1d4ed8);
 }
 
 .icon-mechanic {
   background-color: #10b981;
+  background-image: linear-gradient(90deg, #10b981, #047857);
 }
 
 .icon-strategist {
   background-color: #8b5cf6;
+  background-image: linear-gradient(90deg, #8b5cf6, #6d28d9);
 }
 
 .icon-principal {
   background-color: #f59e0b;
+  background-image: linear-gradient(90deg, #f59e0b, #d97706);
 }
 
 .icon-technical {
   background-color: #6366f1;
+  background-image: linear-gradient(90deg, #6366f1, #4f46e5);
 }
 
 .icon-default {
   background-color: #6b7280;
+  background-image: linear-gradient(90deg, #6b7280, #4b5563);
 }
 
 .member-info {
-  padding: 16px;
+  padding: 20px;
+  color: #e5e7eb;
 }
 
 .member-info h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #f9fafb;
+  margin-bottom: 14px;
+  letter-spacing: 0.25px;
 }
 
 .member-details {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .detail {
   display: flex;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .detail-label {
   font-weight: 500;
-  color: #6b7280;
+  color: #9ca3af;
   width: 100px;
 }
 
 .detail-value {
-  color: #1f2937;
+  color: #e5e7eb;
+  font-weight: 500;
 }
 
 .attribute-highlights {
-  border-top: 1px solid #e5e7eb;
-  padding-top: 12px;
-  margin-bottom: 12px;
+  border-top: 1px solid #374151;
+  padding-top: 16px;
+  margin-bottom: 16px;
 }
 
 .attribute {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .attribute-label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  color: #6b7280;
-  margin-bottom: 4px;
+  color: #9ca3af;
+  margin-bottom: 6px;
+  display: block;
 }
 
 .attribute-bar {
   width: 100%;
-  height: 6px;
-  border-radius: 3px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #1f2937;
   overflow: hidden;
 }
 
 .attribute-fill {
   height: 100%;
   background-color: #3b82f6;
-  border-radius: 3px;
+  border-radius: 4px;
+  transition: width 0.5s ease-out;
 }
 
 .attribute-fill.highlight {
   background-color: #f59e0b;
+  background-image: linear-gradient(90deg, #f59e0b, #d97706);
 }
 
 .member-bottom {
@@ -199,24 +211,45 @@
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  margin-top: 12px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #374151;
 }
 
 .member-date {
-  color: #6b7280;
+  color: #9ca3af;
+  font-size: 13px;
 }
 
-.edit-button {
-  padding: 4px 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  color: #4b5563;
+.member-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.view-button, .edit-button {
+  padding: 6px 12px;
+  border-radius: 6px;
   font-weight: 500;
+  font-size: 13px;
   text-decoration: none;
   transition: all 0.2s;
 }
 
+.view-button {
+  background-color: #2563eb;
+  color: white;
+}
+
+.view-button:hover {
+  background-color: #1d4ed8;
+}
+
+.edit-button {
+  border: 1px solid #4b5563;
+  color: #e5e7eb;
+}
+
 .edit-button:hover {
-  background-color: #e5e7eb;
-  color: #1f2937;
+  background-color: #374151;
+  border-color: #6b7280;
 }

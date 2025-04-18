@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
-import CreateMember from './pages/CreateMember';
+import MemberForm from './pages/MemberForm';
 import TeamGallery from './pages/TeamGallery';
 import MemberDetails from './components/MemberDetails';
 import TeamPerformance from './pages/TeamPerformance';
@@ -14,9 +14,10 @@ function App() {
       <Navbar />    
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/create" element={<CreateMember />} />
+        <Route path="/create" element={<MemberForm />} />
+        <Route path="/edit-member/:id" element={<MemberForm />} />
         <Route path="/gallery" element={<TeamGallery />} />
-        <Route path="/car/:id" element={<MemberDetails />} />
+        <Route path="/member-details/:id" element={<MemberDetails />} />
         <Route path="/performance" element={<TeamPerformance />} />
       </Routes>
       <Footer />

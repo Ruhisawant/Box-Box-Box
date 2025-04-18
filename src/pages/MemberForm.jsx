@@ -1,17 +1,72 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Save, X, Timer, Calculator, ArrowLeft, User, Wrench, Users, BookUser, Cog } from 'lucide-react';
 import { supabase } from '../supabase';
-import './CreateMember.css';
+import './MemberForm.css';
 
-function CreateMember() {
+function MemberForm() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const [nationality, setNationality] = useState('');
   const [age, setAge] = useState('');
   const [bio, setBio] = useState('');
-  const [attributes, setAttributes] = useState({});
+  const { id } = useParams();
+  const isEditMode = !!id;
+  const [attributes, setAttributes] = useState({
+    skill: 1,
+    experience: 1,
+    fitness: 1,
+    teamwork: 1,
+    focus: 1,
+    strategy: 1,
+    technical: 1,
+    leadership: 1,
+    aggression: 1,
+  });  
+
+  // Fetch member data when in edit mode
+  useEffect(() => {
+    if (isEditMode) {
+      const fetchMemberData = async () => {
+        try {
+          const { data, error } = await supabase
+            .from('team_members')
+            .select('*')
+            .eq('id', id)
+            .single();
+          
+          if (error) throw error;
+          
+          if (data) {
+            // Populate form fields with existing data
+            setName(data.name || '');
+            setRole(data.role || '');
+            setNationality(data.nationality || '');
+            setAge(data.age?.toString() || '');
+            setBio(data.bio || '');
+            
+            // Merge default attributes with existing ones
+            setAttributes({
+              skill: data.attributes?.skill || 1,
+              experience: data.attributes?.experience || 1,
+              fitness: data.attributes?.fitness || 1,
+              teamwork: data.attributes?.teamwork || 1,
+              focus: data.attributes?.focus || 1,
+              strategy: data.attributes?.strategy || 1,
+              technical: data.attributes?.technical || 1,
+              leadership: data.attributes?.leadership || 1,
+              aggression: data.attributes?.aggression || 1,
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching member data:', error.message);
+        }
+      };
+      
+      fetchMemberData();
+    }
+  }, [id, isEditMode]);
 
   // Countries list
   const countries = [
@@ -55,24 +110,45 @@ function CreateMember() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    try {      
-      const { data, error } = await supabase
-        .from('team_members')
-        .insert([
-          { 
+  
+    try {
+      if (isEditMode) {
+        // Update existing member
+        const { error } = await supabase
+          .from('team_members')
+          .update({
             name,
             role,
             nationality,
             age: Number(age),
             bio,
-            attributes: attributes
-          }
-        ])
+            attributes,
+            updated_at: new Date()
+          })
+          .eq('id', id);
+          
+        if (error) throw error;
+        navigate(`/member-details/${id}`);
+      } else {
+        // Create new member
+        const { data, error } = await supabase
+          .from('team_members')
+          .insert([{
+            name,
+            role,
+            nationality,
+            age: Number(age),
+            bio,
+            attributes,
+            created_at: new Date()
+          }])
         .select();
-      navigate('/gallery');
+      
+        if (error) throw error;
+        navigate(`/member-details/${data[0].id}`);
+      }
     } catch (error) {
-      'Failed to create team member: ' + error
+      `Error ${isEditMode ? 'updating' : 'creating'} team member:`, error.message
     }
   };
 
@@ -95,6 +171,25 @@ function CreateMember() {
     );
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to remove this team member?')) {
+      return;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from('team_members')
+        .delete()
+        .eq('id', id);
+        
+      if (error) throw error;
+      
+      navigate('/gallery');
+    } catch (error) {
+      setError('Error deleting team member: ' + error.message);
+    }
+  };
+
   return (
     <div className="main-content">
       <Link to="/gallery" className="btn secondary"><ArrowLeft className='icon'/> Back to Team</Link>
@@ -102,18 +197,45 @@ function CreateMember() {
 
       <div className="header-content">
         <div className="header-text">
-          <h2>Add Team Member</h2>
-          <p>Create a new member for your F1 team</p>
+          <h2>{isEditMode ? 'Edit' : 'Add'} Team Member</h2>
+          <p>{isEditMode ? 'Update existing team member details' : 'Create a new member for your F1 team'}</p>
         </div>
         <div className="header-actions">
-        <button
-          type="button" className="btn secondary"
-          onClick={() => {setName(''); setRole(''); setNationality(''); setAge(''); setBio(''); setAttributes({})}}
-        >
-          <X className="icon" /> Reset
-        </button>
-
-          <button type="submit" className="btn primary"><Save className="icon" /> Save</button>
+          <button
+            type="button" className={`btn ${isEditMode ? 'secondary' : 'primary'}`}
+            onClick={() => {
+              if (isEditMode) {
+                // Reset to original values from database
+                navigate(0); // Refresh page to reload data
+              } else {
+                // Reset to empty in create mode
+                setName(''); 
+                setRole(''); 
+                setNationality(''); 
+                setAge(''); 
+                setBio(''); 
+                setAttributes({
+                  skill: 1,
+                  experience: 1,
+                  fitness: 1,
+                  teamwork: 1,
+                  focus: 1,
+                  strategy: 1,
+                  technical: 1,
+                  leadership: 1,
+                  aggression: 1
+                });
+              }
+            }}
+          >
+            <X className="icon" /> Reset
+          </button>
+          
+          {isEditMode && (
+            <button onClick={handleDelete} className="btn primary">
+              Delete Member
+            </button>
+          )}
         </div>
       </div>
                 
@@ -195,16 +317,16 @@ function CreateMember() {
       </div>
 
       <div className="button-group">
-            <button type="button" className="btn secondary" onClick={() => navigate('/gallery')}>
-              Cancel
-            </button>
-            <button type="submit" className="btn primary">
-              Create Team Member
-            </button>
-          </div>
+        <button type="button" className="btn secondary" onClick={() => navigate('/gallery')}>
+          Cancel
+        </button>
+        <button type="submit" className="btn primary">
+          {isEditMode ? 'Update Team Member' : 'Create Team Member'}
+        </button>
+      </div>
       </form>
     </div>
   );
 }
 
-export default CreateMember;
+export default MemberForm;

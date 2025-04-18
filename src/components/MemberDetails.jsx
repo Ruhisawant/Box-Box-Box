@@ -102,7 +102,7 @@ function MemberDetails() {
         
       if (error) throw error;
       
-      navigate('/team');
+      navigate('/gallery');
     } catch (error) {
       setError('Error deleting team member: ' + error.message);
     }
@@ -116,7 +116,7 @@ function MemberDetails() {
     return (
       <div className="error-container">
         <div className="error-message">{error}</div>
-        <Link to="/team" className="back-link">Back to Team</Link>
+        <Link to="/gallery" className="back-link">Back to Team</Link>
       </div>
     );
   }
@@ -125,7 +125,7 @@ function MemberDetails() {
     return (
       <div className="error-container">
         <div className="error-message">Team member not found</div>
-        <Link to="/team" className="back-link">Back to Team</Link>
+        <Link to="/gallery" className="back-link">Back to Team</Link>
       </div>
     );
   }
@@ -135,7 +135,7 @@ function MemberDetails() {
   return (
     <div className="member-details-container">
       <div className="member-details-navigation">
-        <Link to="/team" className="back-link">← Back to Team</Link>
+        <Link to="/gallery" className="back-link">← Back to Team</Link>
         <div className="member-actions">
           <Link to={`/edit-member/${member.id}`} className="edit-link">Edit Member</Link>
           <button onClick={handleDelete} className="delete-btn">Delete Member</button>
