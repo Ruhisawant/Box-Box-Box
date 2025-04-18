@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Pencil, Trash2, ArrowLeft } from 'lucide-react'
 import { supabase } from '../supabase';
+// import { getRoleIconClass } from '../components/SummaryCard';
 import './MemberDetails.css';
 
 function MemberDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [member, setMember] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMemberDetails = async () => {
@@ -20,16 +20,13 @@ function MemberDetails() {
           .single();
           
         if (error) throw error;
-        
         if (!data) {
           throw new Error('Team member not found');
         }
         
         setMember(data);
       } catch (error) {
-        setError('Error fetching team member details: ' + error.message);
-      } finally {
-        setIsLoading(false);
+        'Error fetching team member details:', error.message
       }
     };
     
@@ -39,9 +36,13 @@ function MemberDetails() {
   // Helper function to calculate overall rating
   const calculateRating = (member) => {
     if (!member || !member.attributes) return { total: 0 };
+    const attributes = member.attributes || {};
     
-    // Get all attribute values
-    const attributeValues = Object.values(member.attributes);
+    const attributeValues = Object.values(attributes).filter(val => 
+      typeof val === 'number' && !isNaN(val)
+    );
+    
+    if (attributeValues.length === 0) return { total: 0, ...attributes };
     
     // Calculate average
     const total = Math.round(
@@ -50,41 +51,27 @@ function MemberDetails() {
     
     return {
       total,
-      ...member.attributes
+      ...attributes
     };
   };
 
   // Helper to get role-specific strengths
   const getRoleStrengths = (member) => {
-    if (!member) return 'Unknown';
+    if (!member || !member.attributes) return 'Unknown';
     
     const strengths = [];
+    const attributes = member.attributes || {};
     
     // Common attributes assessment
-    if (member.attributes.skill >= 8) strengths.push('High Skill Level');
-    if (member.attributes.experience >= 8) strengths.push('Highly Experienced');
-    if (member.attributes.teamwork >= 8) strengths.push('Excellent Team Player');
-    if (member.attributes.focus >= 8) strengths.push('Strong Focus');
-    if (member.attributes.fitness >= 8) strengths.push('Exceptional Fitness');
-    
-    // Role-specific assessments
-    if (member.role === 'Driver' && member.attributes.aggression >= 8) {
-      strengths.push('Aggressive Driver');
-    }
-    
-    if ((member.role === 'Engineer' || member.role === 'Mechanic' || member.role === 'Technical Director') && 
-        member.attributes.technical >= 8) {
-      strengths.push('Technical Expert');
-    }
-    
-    if (member.role === 'Strategist' && member.attributes.strategy >= 8) {
-      strengths.push('Strategic Mastermind');
-    }
-    
-    if ((member.role === 'Team Principal' || member.role === 'Technical Director') && 
-        member.attributes.leadership >= 8) {
-      strengths.push('Strong Leader');
-    }
+    if (attributes.skill >= 8) strengths.push('High Skill Level');
+    if (attributes.experience >= 8) strengths.push('Highly Experienced');
+    if (attributes.teamwork >= 8) strengths.push('Excellent Team Player');
+    if (attributes.focus >= 8) strengths.push('Strong Focus');
+    if (attributes.fitness >= 8) strengths.push('Exceptional Fitness');
+    if (attributes.aggression >= 8) strengths.push('Highly Aggressive');
+    if (attributes.technical >= 8) strengths.push('Technical Expert');
+    if (attributes.leadership >= 8) strengths.push('Strong Leader');
+    if (attributes.strategy >= 8) strengths.push('Strategic Mastermind');
     
     return strengths.length > 0 ? strengths.join(', ') : 'No specific strengths';
   };
@@ -93,7 +80,6 @@ function MemberDetails() {
     if (!window.confirm('Are you sure you want to remove this team member?')) {
       return;
     }
-    
     try {
       const { error } = await supabase
         .from('team_members')
@@ -101,25 +87,11 @@ function MemberDetails() {
         .eq('id', id);
         
       if (error) throw error;
-      
       navigate('/gallery');
     } catch (error) {
-      setError('Error deleting team member: ' + error.message);
+      'Error deleting team member:', error.message
     }
   };
-
-  if (isLoading) {
-    return <div className="loading">Loading team member details...</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="error-container">
-        <div className="error-message">{error}</div>
-        <Link to="/gallery" className="back-link">Back to Team</Link>
-      </div>
-    );
-  }
 
   if (!member) {
     return (
@@ -131,26 +103,47 @@ function MemberDetails() {
   }
 
   const rating = calculateRating(member);
+  
+  // Define all 9 attributes with their colors
+  const allAttributes = [
+    { key: 'skill', label: 'Skill', color: '#8b4513' },        // Red
+    { key: 'experience', label: 'Experience', color: '#0090ff' }, // Blue
+    { key: 'fitness', label: 'Fitness', color: '#ffcc00' },    // Yellow
+    { key: 'teamwork', label: 'Teamwork', color: '#44cc00' },  // Green
+    { key: 'focus', label: 'Focus', color: '#9900cc' },        // Purple
+    { key: 'aggression', label: 'Aggression', color: '#ff6600' }, // Orange
+    { key: 'technical', label: 'Technical', color: '#00ccaa' }, // Teal
+    { key: 'leadership', label: 'Leadership', color: '#ff3399' }, // Pink
+    { key: 'strategy', label: 'Strategy', color: '#ff1801' }   // Brown
+  ];
 
   return (
-    <div className="member-details-container">
-      <div className="member-details-navigation">
-        <Link to="/gallery" className="back-link">← Back to Team</Link>
-        <div className="member-actions">
-          <Link to={`/edit-member/${member.id}`} className="edit-link">Edit Member</Link>
-          <button onClick={handleDelete} className="delete-btn">Delete Member</button>
+    <div className="details-main-content">
+      <div className="details-header-content">
+        <Link to="/gallery" className="btn secondary"><ArrowLeft className='icon'/>Back to Gallery</Link>
+        <div className="details-actions">
+          <Link to={`/edit-member/${member.id}`} className="btn secondary"><Pencil className='icon'/></Link>
+          <button onClick={handleDelete} className="btn primary"><Trash2 className='icon'/></button>
         </div>
       </div>
       
-      <div className="member-details-header">
-        <h2>{member.name}</h2>
-        <div className="member-role">{member.role}</div>
+      <div className="title container">
+        <div className="left">
+          <h2>{member.name}</h2>
+          <div className={`member-role`}>
+            {member.role}
+          </div>
+      {/* fix this */}
+        </div>
+        <div className="right rating-avg">
+          Overall Rating: <span className="highlight">{rating.total}/10</span>
+        </div>
       </div>
-      
-      <div className="member-details-content">
-        <div className="member-info-container">
+
+      <div className="container">
+        <div className="member-info-content">
           <h3>Personal Information</h3>
-          <div className="info-grid">
+          <div className="info-section">
             <div className="info-item">
               <span className="info-label">Role</span>
               <span className="info-value">{member.role}</span>
@@ -163,10 +156,6 @@ function MemberDetails() {
               <span className="info-label">Age</span>
               <span className="info-value">{member.age}</span>
             </div>
-            <div className="info-item">
-              <span className="info-label">Member ID</span>
-              <span className="info-value">{member.id}</span>
-            </div>
           </div>
 
           <div className="biography-section">
@@ -174,123 +163,27 @@ function MemberDetails() {
             <p>{member.bio}</p>
           </div>
 
-          <div className="attributes-section">
-            <h3>Performance Analysis</h3>
-            <div className="performance-total">
-              Overall Rating: <span className="highlight">{rating.total}/10</span>
-            </div>
-            
-            <div className="attribute-bars">
-              {/* Common attributes for all roles */}
-              <div className="attribute-bar">
-                <div className="bar-label">Skill</div>
-                <div className="bar-container">
-                  <div 
-                    className="bar-fill" 
-                    style={{ width: `${rating.skill * 10}%`, backgroundColor: '#ff1801' }}
-                  ></div>
-                </div>
-                <div className="bar-value">{rating.skill}</div>
-              </div>
-              
-              <div className="attribute-bar">
-                <div className="bar-label">Experience</div>
-                <div className="bar-container">
-                  <div 
-                    className="bar-fill" 
-                    style={{ width: `${rating.experience * 10}%`, backgroundColor: '#0090ff' }}
-                  ></div>
-                </div>
-                <div className="bar-value">{rating.experience}</div>
-              </div>
-              
-              <div className="attribute-bar">
-                <div className="bar-label">Fitness</div>
-                <div className="bar-container">
-                  <div 
-                    className="bar-fill" 
-                    style={{ width: `${rating.fitness * 10}%`, backgroundColor: '#ffcc00' }}
-                  ></div>
-                </div>
-                <div className="bar-value">{rating.fitness}</div>
-              </div>
-              
-              <div className="attribute-bar">
-                <div className="bar-label">Teamwork</div>
-                <div className="bar-container">
-                  <div 
-                    className="bar-fill" 
-                    style={{ width: `${rating.teamwork * 10}%`, backgroundColor: '#44cc00' }}
-                  ></div>
-                </div>
-                <div className="bar-value">{rating.teamwork}</div>
-              </div>
-              
-              <div className="attribute-bar">
-                <div className="bar-label">Focus</div>
-                <div className="bar-container">
-                  <div 
-                    className="bar-fill" 
-                    style={{ width: `${rating.focus * 10}%`, backgroundColor: '#9900cc' }}
-                  ></div>
-                </div>
-                <div className="bar-value">{rating.focus}</div>
-              </div>
-              
-              {/* Role-specific attributes */}
-              {member.role === 'Driver' && rating.aggression && (
-                <div className="attribute-bar">
-                  <div className="bar-label">Aggression</div>
-                  <div className="bar-container">
-                    <div 
-                      className="bar-fill" 
-                      style={{ width: `${rating.aggression * 10}%`, backgroundColor: '#ff6600' }}
-                    ></div>
+          <div className="details-attributes-section">
+            <h3>Performance Analysis</h3>            
+            <div className="details-attribute-bars">
+              {allAttributes.map(attr => {
+                const value = member.attributes && member.attributes[attr.key] !== undefined 
+                  ? member.attributes[attr.key] 
+                  : 0;
+                
+                return (
+                  <div className="details-attribute-bar" key={attr.key}>
+                    <div className="bar-label">{attr.label}</div>
+                    <div className="bar-container">
+                      <div 
+                        className="bar-fill" 
+                        style={{ width: `${value * 10}%`, backgroundColor: attr.color }}
+                      ></div>
+                    </div>
+                    <div className="bar-value">{value}</div>
                   </div>
-                  <div className="bar-value">{rating.aggression}</div>
-                </div>
-              )}
-              
-              {(member.role === 'Engineer' || member.role === 'Mechanic' || member.role === 'Technical Director') && 
-                rating.technical && (
-                <div className="attribute-bar">
-                  <div className="bar-label">Technical</div>
-                  <div className="bar-container">
-                    <div 
-                      className="bar-fill" 
-                      style={{ width: `${rating.technical * 10}%`, backgroundColor: '#33bbff' }}
-                    ></div>
-                  </div>
-                  <div className="bar-value">{rating.technical}</div>
-                </div>
-              )}
-              
-              {(member.role === 'Team Principal' || member.role === 'Technical Director') && 
-                rating.leadership && (
-                <div className="attribute-bar">
-                  <div className="bar-label">Leadership</div>
-                  <div className="bar-container">
-                    <div 
-                      className="bar-fill" 
-                      style={{ width: `${rating.leadership * 10}%`, backgroundColor: '#ff3399' }}
-                    ></div>
-                  </div>
-                  <div className="bar-value">{rating.leadership}</div>
-                </div>
-              )}
-              
-              {member.role === 'Strategist' && rating.strategy && (
-                <div className="attribute-bar">
-                  <div className="bar-label">Strategy</div>
-                  <div className="bar-container">
-                    <div 
-                      className="bar-fill" 
-                      style={{ width: `${rating.strategy * 10}%`, backgroundColor: '#66ccff' }}
-                    ></div>
-                  </div>
-                  <div className="bar-value">{rating.strategy}</div>
-                </div>
-              )}
+                );
+              })}
             </div>
           </div>
         

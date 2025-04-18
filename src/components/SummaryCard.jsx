@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
 
 const getRoleIconClass = (role) => {
-  switch (role) {
-    case 'Driver': return 'icon-driver'
-    case 'Engineer': return 'icon-engineer'
-    case 'Mechanic': return 'icon-mechanic'
-    case 'Strategist': return 'icon-strategist'
-    case 'Team Principal': return 'icon-principal'
-    case 'Technical Director': return 'icon-technical'
-    default: return 'icon-default'
+  switch (role?.toLowerCase()) {
+    case 'driver': return 'icon-driver';
+    case 'engineer': return 'icon-engineer';
+    case 'mechanic': return 'icon-mechanic';
+    case 'strategist': return 'icon-strategist';
+    case 'team principal': return 'icon-principal';
+    case 'technical director': return 'icon-technical';
+    default: return 'icon-default';
   }
-}
+};
 
 const SummaryCard = ({ member }) => {
   return (

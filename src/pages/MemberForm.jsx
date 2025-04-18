@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { Save, X, Timer, Calculator, ArrowLeft, User, Wrench, Users, BookUser, Cog } from 'lucide-react'
+import { Save, X, Timer, Calculator, ArrowLeft, User, Wrench, Users, BookUser, Cog, Plus } from 'lucide-react'
 import { supabase } from '../supabase'
 import './MemberForm.css'
 
@@ -267,26 +267,35 @@ function MemberForm() {
         {renderRoleOptions()}
       </div>
 
-      <div className='attribute-selection container'>
+      <div className='attributes container'>
         <h2>Attributes</h2>
-        {attributeList.map(attribute => (
-          <div key={attribute} className='attribute-group'>
-            <label>{attributeDescriptions[attribute]}</label>
-            <div className='range'>
+        <div className='attribute-sliders'>
+          {attributeList.map(attribute => (
+            <div key={attribute} className='attribute-slider'>
+              <div className='attribute-label-row'>
+                <label>{attributeDescriptions[attribute]}</label>
+                <span className='attribute-value'>{attributes[attribute]}</span>
+              </div>
               <input
                 type='range'
-                min='1' max='10' value={attributes[attribute]}
+                min='1'
+                max='10'
+                value={attributes[attribute]}
                 onChange={(e) => handleAttributeChange(attribute, Number(e.target.value))}
               />
-              <span>{attributes[attribute]}</span>
+
+              <div className='attribute-description'>{attributeDescriptions[attribute]}</div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      <div className='form-actions'>
-        <button type='submit' className='btn primary'>
-          <Save className='icon' /> Save Member
+      <div className="button-group">
+        <button type="button" className="btn secondary" onClick={() => navigate('/gallery')}>
+          Cancel
+        </button>
+        <button type="submit" className="btn primary">
+          Create Team Member
         </button>
       </div>
       </form>

@@ -39,6 +39,7 @@ body {
 .btn.primary {
   background-color: #e50215;
   color: white;
+  border: none;
 }
 
 .btn.primary:hover {

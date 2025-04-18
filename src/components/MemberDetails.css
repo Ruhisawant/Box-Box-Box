@@ -1,90 +1,42 @@
-.member-details-container {
+.details-main-content {
   max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 2rem auto;
 }
 
-.member-details-navigation {
+.details-header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-.back-link {
-  color: #f9fafb;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.back-link:hover {
-  text-decoration: underline;
-  color: #3b82f6;
-}
-
-.member-actions {
+.details-actions {
   display: flex;
   gap: 1rem;
 }
 
-.edit-link {
-  padding: 0.5rem 1rem;
-  background-color: #2563eb;
-  color: white;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+.title.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
 }
 
-.edit-link:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-2px);
-}
-
-.delete-btn {
-  padding: 0.5rem 1rem;
-  background-color: #1e293b;
-  color: #e5e7eb;
-  border: 1px solid #4b5563;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.delete-btn:hover {
-  background-color: #ef4444;
-  border-color: #dc2626;
-  color: white;
-  transform: translateY(-2px);
-}
-
-.member-details-header {
-  height: 140px;
-  border-radius: 12px;
+.left {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
-  padding: 1.5rem 2rem;
-  margin-bottom: 2rem;
-  position: relative;
-  overflow: hidden;
-  background-color: #1e293b;
-  border: 1px solid #2d3748;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.member-details-header h2 {
-  color: white;
+.right {
+  text-align: right;
+  padding-top: 3rem;
+}
+
+.container h2 {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  z-index: 2;
 }
 
 .member-role {
@@ -92,31 +44,32 @@
   font-weight: 500;
   padding: 0.3rem 1rem;
   border-radius: 20px;
-  color: white;
-  z-index: 2;
-  background-image: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
-  border: 1px solid rgba(255,255,255,0.1);
+  background-color: #121821;
+  border: 1px solid #333d4b;
+  display: inline-block;
+  width: fit-content;
 }
 
-.member-details-content {
-  background-color: #1e293b;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  border: 1px solid #2d3748;
-  color: #e5e7eb;
+.rating-avg {
+  font-size: 1.2rem;
+  color: #9ca4ae;
 }
 
-.member-info-container h3 {
-  color: #f9fafb;
+.highlight {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #0580ff;
+}
+
+
+.member-info-content h3 {
   margin-top: 0;
-  margin-bottom: 1.2rem;
-  border-bottom: 2px solid #374151;
+  border-bottom: 2px solid #333d4b;
   padding-bottom: 0.5rem;
   font-size: 1.3rem;
 }
 
-.info-grid {
+.info-section {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.2rem;
@@ -130,14 +83,13 @@
 
 .info-label {
   font-size: 0.9rem;
-  color: #9ca3af;
+  color: #9ca4ae;
   margin-bottom: 0.3rem;
 }
 
 .info-value {
   font-weight: 600;
   font-size: 1.1rem;
-  color: #f9fafb;
 }
 
 .biography-section {
@@ -146,64 +98,43 @@
 
 .biography-section p {
   line-height: 1.6;
-  color: #e5e7eb;
 }
 
-.attributes-section {
-  margin-bottom: 2.5rem;
+.details-attributes-section {
+  margin-bottom: 3rem;
 }
 
-.performance-total {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  color: #e5e7eb;
-}
-
-.highlight {
-  font-weight: bold;
-  font-size: 1.4rem;
-  color: #3b82f6;
-}
-
-.attribute-bars {
+.details-attribute-bars {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
 
-.attribute-bar {
-  display: flex;
+.details-attribute-bar {
+  display: grid;
+  grid-template-columns: 120px 1fr 40px;
   align-items: center;
   gap: 1rem;
-}
-
-.bar-label {
-  flex: 0 0 120px;
-  font-weight: 500;
-  color: #9ca3af;
+  height: 1.5rem;
+  background-color: #1e2330;
 }
 
 .bar-container {
-  flex: 1;
-  height: 10px;
-  background-color: #1f2937;
-  border-radius: 5px;
+  height: 12px;
+  background-color: #252b3c;
+  border-radius: 6px;
   overflow: hidden;
   position: relative;
 }
 
 .bar-fill {
   height: 100%;
-  border-radius: 5px;
-  transition: width 0.6s ease-out;
+  border-radius: 6px;
 }
 
 .bar-value {
-  flex: 0 0 40px;
   text-align: right;
   font-weight: bold;
-  color: #f9fafb;
 }
 
 .strengths-section {
@@ -211,11 +142,10 @@
 }
 
 .strengths-section p {
-  color: #e5e7eb;
-  background-color: #2d3748;
+  background-color: #333d4b;
   padding: 1rem;
   border-radius: 8px;
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid #0580ff;
 }
 
 .role-notes {
@@ -224,93 +154,5 @@
 
 .role-notes p {
   line-height: 1.6;
-  color: #e5e7eb;
   margin-bottom: 1rem;
-}
-
-.loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #9ca3af;
-  padding: 3rem;
-}
-
-.error-container {
-  text-align: center;
-  padding: 3rem;
-}
-
-.error-message {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-/* Role-specific colors for header backgrounds */
-.member-details-header[data-role="Driver"] {
-  background-image: linear-gradient(90deg, #1e293b, #b91c1c);
-}
-
-.member-details-header[data-role="Engineer"] {
-  background-image: linear-gradient(90deg, #1e293b, #1d4ed8);
-}
-
-.member-details-header[data-role="Mechanic"] {
-  background-image: linear-gradient(90deg, #1e293b, #047857);
-}
-
-.member-details-header[data-role="Strategist"] {
-  background-image: linear-gradient(90deg, #1e293b, #6d28d9);
-}
-
-.member-details-header[data-role="Team Principal"] {
-  background-image: linear-gradient(90deg, #1e293b, #d97706);
-}
-
-.member-details-header[data-role="Technical Director"] {
-  background-image: linear-gradient(90deg, #1e293b, #4f46e5);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .member-details-container {
-    padding: 1rem;
-  }
-  
-  .member-details-header {
-    height: auto;
-    padding: 1.2rem;
-  }
-  
-  .member-details-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .attribute-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3rem;
-  }
-  
-  .bar-label {
-    flex: none;
-  }
-  
-  .member-details-navigation {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .member-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
 }
