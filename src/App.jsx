@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import CreateMember from './pages/CreateMember';
 import TeamGallery from './pages/TeamGallery';
 import MemberDetails from './components/MemberDetails';
+import TeamPerformance from './pages/TeamPerformance';
 import Footer from './components/Footer';
 import './App.css';
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/create" element={<CreateMember />} />
         <Route path="/gallery" element={<TeamGallery />} />
         <Route path="/car/:id" element={<MemberDetails />} />
+        <Route path="/performance" element={<TeamPerformance />} />
       </Routes>
       <Footer />
     </Router>

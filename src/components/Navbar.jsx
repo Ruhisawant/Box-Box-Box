@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { House, UsersRound, Plus, Trophy, Settings } from 'lucide-react';
+import { House, UsersRound, Plus, Trophy } from 'lucide-react';
 import './Navbar.css';
 
 function Navbar() {
@@ -36,11 +36,6 @@ function Navbar() {
           <li className="navbar-item">
             <Link to="/performance" className={isActive('/performance')}>
               <Trophy className="icon" /> Performance
-            </Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/settings" className={isActive('/settings')}>
-              <Settings className="icon" /> Settings
             </Link>
           </li>
         </ul>
