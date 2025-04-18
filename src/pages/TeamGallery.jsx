@@ -50,60 +50,61 @@ function TeamGallery() {
     );
 
   return (
-    <div className="body">
-      <div className="header-content">
-        <div className="header-text">
+    <div className="main-content">
+      <div className="gallery-header-content">
+        <div className="gallery-header-text">
           <h2>Your Team</h2>
           <p>Manage your team members and their roles</p>
         </div>
-        <Link to="/create" className="btn"><Plus className="icon" /> Add Team Member</Link>
+        <Link to="/create" className="btn primary"><Plus className="icon" /> Add Team Member</Link>
       </div>
 
-      <div className="filters-section">
-        <div className="filter-group">
-          <Search className="icon" />
-          <input
-            type="text"
-            placeholder="Search by name"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="filter-input"
-          />
-        </div>
+      <div className="container">
+        <div className="filters-section">
+          <div className="filter-group input-wrapper">
+            <Search className="filter-icon" size={18} />
+            <input
+              type="text"
+              placeholder="Search by name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="filter-input"
+            />
+          </div>
 
-        <div className="filter-group">
-          <Funnel className="icon" />
-          <select
-            value={selectedRole}
-            onChange={(e) => setSelectedRole(e.target.value)}
-            className="filter-select"
-          >
-            <option value="All">All Roles</option>
-            <option value="Driver">Driver</option>
-            <option value="Engineer">Engineer</option>
-            <option value="Mechanic">Mechanic</option>
-            <option value="Strategist">Strategist</option>
-            <option value="Team Principal">Team Principal</option>
-            <option value="Technical Director">Technical Director</option>
-          </select>
-        </div>
+          <div className="filter-group input-wrapper">
+            <Funnel className="filter-icon" size={18} />
+            <select
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value)}
+              className="filter-select"
+            >
+              <option value="All">All Roles</option>
+              <option value="Driver">Driver</option>
+              <option value="Engineer">Engineer</option>
+              <option value="Mechanic">Mechanic</option>
+              <option value="Strategist">Strategist</option>
+              <option value="Team Principal">Team Principal</option>
+              <option value="Technical Director">Technical Director</option>
+            </select>
+          </div>
 
-        <div className="filter-group">
-          <ArrowDownUp className="icon" />
-          <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-            className="filter-select"
-          >
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-          </select>
+          <div className="filter-group input-wrapper">
+            <ArrowDownUp className="filter-icon" size={18} />
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+              className="filter-select"
+            >
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+          </div>
         </div>
       </div>
-
 
       {members.length === 0 ? (
-        <div className="empty-gallery">
+        <div className="container">
           <UsersRound size={48} />
           <p>No team members yet</p>
           <Link to="/create" className="btn">

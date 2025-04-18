@@ -1,4 +1,4 @@
-.header-content {
+.gallery-header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -7,32 +7,16 @@
   margin-bottom: 32px;
 }
 
-.header-text h2 {
+.gallery-header-text h2 {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 0.6rem;
 }
 
-.header-text p {
+.gallery-header-text p {
   font-size: 16px;
   color: #9ca4ae;
   margin: 0;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 10px 16px;
-  background-color: #e50215;
-  border-radius: 6px;
-  color: white;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background-color 0.2s;
-}
-
-.btn:hover {
-  background-color: #c80b18;
 }
 
 .filters-section {
@@ -50,13 +34,44 @@
   min-width: 200px;
 }
 
+.input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.filter-icon {
+  position: absolute;
+  left: 10px;
+  color: #9ca4ae;
+  pointer-events: none;
+}
+
 .filter-input,
 .filter-select {
-  flex-grow: 1;
-  padding: 8px 12px;
+  width: 100%;
+  padding: 8px 12px 8px 36px;
   border: 1px solid #333d4b;
   border-radius: 6px;
   font-size: 14px;
+  background-color: #121821;
+  color: #9ca4ae;
+  appearance: none;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #0580ff;
+}
+
+.filter-input::placeholder {
+  color: #9ca4ae;
+}
+
+/* why is this not overridding */
+.container {
+  background-color: 121821;
+  text-align: center;
 }
 
 .members-section {
@@ -165,7 +180,6 @@
 .attribute-bar {
   width: 100%;
   height: 6px;
-  background-color: #e5e7eb;
   border-radius: 3px;
   overflow: hidden;
 }
@@ -194,7 +208,6 @@
 
 .edit-button {
   padding: 4px 10px;
-  background-color: #f3f4f6;
   border: 1px solid #d1d5db;
   border-radius: 4px;
   color: #4b5563;
@@ -206,18 +219,4 @@
 .edit-button:hover {
   background-color: #e5e7eb;
   color: #1f2937;
-}
-
-.empty-gallery {
-  text-align: center;
-  padding: 60px 0;
-  background-color: #f3f4f6;
-  border-radius: 8px;
-  border: 2px dashed #d1d5db;
-}
-
-.empty-gallery p {
-  font-size: 18px;
-  color: #4b5563;
-  margin-bottom: 20px;
 }

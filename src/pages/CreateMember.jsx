@@ -70,7 +70,7 @@ function CreateMember() {
           }
         ])
         .select();
-      navigate('/team');
+      navigate('/gallery');
     } catch (error) {
       'Failed to create team member: ' + error
     }
@@ -97,7 +97,7 @@ function CreateMember() {
 
   return (
     <div className="main-content">
-      <Link to="/team" className="btn secondary"><ArrowLeft className='icon'/> Back to Team</Link>
+      <Link to="/gallery" className="btn secondary"><ArrowLeft className='icon'/> Back to Team</Link>
       <form onSubmit={handleSubmit}>
 
       <div className="header-content">
@@ -195,7 +195,7 @@ function CreateMember() {
       </div>
 
       <div className="button-group">
-            <button type="button" className="btn secondary" onClick={() => navigate('/team')}>
+            <button type="button" className="btn secondary" onClick={() => navigate('/gallery')}>
               Cancel
             </button>
             <button type="submit" className="btn primary">
