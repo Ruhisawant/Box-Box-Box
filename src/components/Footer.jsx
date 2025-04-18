@@ -7,12 +7,12 @@ function Footer() {
       color: '#ccc',
       textAlign: 'center',
       position: 'relative',
-      bottom: 0,
+      bottom: 0
     },
     text: {
-      fontSize: '0.9rem',
-    },
-  };
+      fontSize: '0.9rem'
+    }
+  }
 
   return (
     <footer style={styles.footer}>
@@ -22,7 +22,7 @@ function Footer() {
         </span>
       </div>
     </footer>
-  );
+  )
 }
 
-export default Footer;
+export default Footer

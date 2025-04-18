@@ -3,7 +3,7 @@ import {
   Users, BadgePercent, Trophy, Flag, ChevronRight, 
   Award, Clock, ArrowUpRight
 } from "lucide-react";
-// import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import './TeamPerformance.css';
 
 function TeamPerformance() {
@@ -155,7 +155,7 @@ function TeamPerformance() {
   return (
     <div className="main-content">
       <div className="performance-header">
-        <div className="header-content">
+        <div className="performance-header-content">
           <h1>Team Performance</h1>
           <p>Analyze your team's performance metrics and potential</p>
         </div>
@@ -269,7 +269,7 @@ function TeamPerformance() {
           
           {teamMembers.length > 0 ? (
             <div className="chart-container">
-              {/* <ResponsiveContainer width="100%" height={350}>
+              <ResponsiveContainer width="100%" height={350}>
                 <PieChart>
                   <Pie
                     data={pieData}
@@ -292,7 +292,7 @@ function TeamPerformance() {
                   <Tooltip />
                   <Legend />
                 </PieChart>
-              </ResponsiveContainer> */}
+              </ResponsiveContainer>
             </div>
           ) : (
             <div className="empty-state">
