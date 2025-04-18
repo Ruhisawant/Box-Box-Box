@@ -8,7 +8,6 @@ function Footer() {
       textAlign: 'center',
       position: 'relative',
       bottom: 0,
-      width: '100%',
     },
     text: {
       fontSize: '0.9rem',

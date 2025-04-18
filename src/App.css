@@ -9,3 +9,48 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.main-content {
+  padding: 1rem 2rem;
+  background-color: #121821;
+  color: white;
+}
+
+.container {
+  background-color: #1e2330;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: left;
+  border: 1px solid #333d4b;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background-color: #e50215;
+  color: white;
+}
+
+.btn.primary:hover {
+  background-color: #c80b18;
+}
+
+.btn.secondary {
+  background-color: #121821;
+  border: 1px solid #333d4b;
+  color: white;
+}
+
+.btn.secondary:hover {
+  background-color: #0580ff;
+}

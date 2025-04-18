@@ -4,13 +4,13 @@ import './Home.css';
 
 function Home() {
   return (
-    <div className="body">
+    <div className="main-content">
       <div className="home-top">
-        <div className="header-content">
+        <div className="home-header-content">
           <h1>Build Your <span>Ultimate</span> F1 Team</h1>
           <p>Assemble the perfect Formula 1 team by customizing drivers, engineers, mechanics, and more. Optimize your team's performance to dominate the racing world.</p>
 
-          <div className="buttons">
+          <div className="home-buttons">
             <Link to="/create" className="btn primary"><Plus className="icon" /> Add Team Member</Link>
             <Link to="/gallery" className="btn secondary"><UsersRound className="icon" /> View Team</Link>
           </div>
@@ -21,7 +21,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="members-section">
+      <div className="home-members-section">
         <div className="title">
           <h2>Recent Team Members</h2>
           <Link to="/gallery" className="view-link"><ArrowRight className="icon" /> View All</Link>
@@ -33,7 +33,7 @@ function Home() {
         {/* to be made */}
       </div>
 
-      <div className="features-section">
+      <div className="home-features-section">
         <div className="container card">
           <div className="icon red"><UsersRound /></div>
           <h3>Create Your Crew</h3>

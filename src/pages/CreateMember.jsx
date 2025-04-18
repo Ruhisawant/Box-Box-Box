@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Save, X, Timer, Calculator, ArrowLeft, User, Wrench, Users, BookUser, Cog } from 'lucide-react';
 import { supabase } from '../supabase';
 import './CreateMember.css';
 
@@ -10,31 +11,40 @@ function CreateMember() {
   const [nationality, setNationality] = useState('');
   const [age, setAge] = useState('');
   const [bio, setBio] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [attributes, setAttributes] = useState({
-    skill: 5,
-    experience: 5,
-    fitness: 5,
-    teamwork: 5,
-    focus: 5,
-    aggression: 5,
-    technical: 5,
-    leadership: 5,
-    strategy: 5
-  });
+  const [attributes, setAttributes] = useState({});
 
-  // Role options
-  const roleOptions = ['Driver', 'Engineer', 'Mechanic', 'Strategist', 'Team Principal', 'Technical Director'];
-  
   // Countries list
   const countries = [
-    "Argentina", "Australia", "Austria", "Belgium", "Brazil", "Canada", "China", "Denmark",
-    "Finland", "France", "Germany", "Hungary", "India", "Italy", "Japan", "Mexico",
-    "Monaco", "Netherlands", "New Zealand", "Norway", "Poland", "Portugal", "Russia", "Spain",
-    "Sweden", "Switzerland", "Thailand", "United Kingdom", "United States", "Venezuela"
+    "Argentina", "Australia", "Austria", "Belgium", "Brazil", "Canada", "China", "Denmark", "Finland", "France", "Germany", 
+    "Hungary", "India", "Italy", "Japan", "Mexico", "Monaco", "Netherlands", "New Zealand", "Norway", "Poland", "Portugal", 
+    "Russia", "Spain", "Sweden", "Switzerland", "Thailand", "United Kingdom", "United States", "Venezuela"
   ];
 
+  // Role options
+  const roleOptions = [
+    {label: 'Driver', description: 'Race the car and execute strategy on track', icon: <User className="role-icon" />},
+    {label: 'Engineer', description: 'Design and optimize car performance', icon: <Cog className="role-icon" />},
+    {label: 'Mechanic', description: 'Maintain and repair the race car', icon: <Wrench className="role-icon" />},
+    {label: 'Strategist', description: 'Plan race strategy and tactics', icon: <Calculator className="role-icon" />},
+    {label: 'Team Principal', description: 'Lead the entire team and make key decisions', icon: <Users className="role-icon" />},
+    {label: 'Technical Director', description: 'Oversee all technical aspects of the car', icon: <BookUser className="role-icon" />},
+    {label: 'Pit Crew', description: 'Execute fast pit stops during races', icon: <Timer className="role-icon" />}
+  ];
+
+  const attributeList = ['skill', 'experience', 'fitness', 'teamwork', 'focus', 'strategy', 'technical', 'leadership', 'aggression'];
+  
+  const attributeDescriptions = {
+    skill: "Overall skill level in their specific role",
+    experience: "Years of experience and knowledge in F1",
+    fitness: "Physical condition and endurance",
+    teamwork: "Ability to work effectively with others",
+    focus: "Concentration and attention to detail",
+    strategy: "Race strategy planning and decision making",
+    technical: "Technical knowledge and problem-solving",
+    leadership: "Ability to lead and inspire the team",
+    aggression: "Racing aggression and overtaking ability",
+  };
+  
   // Handle attribute change
   const handleAttributeChange = (attribute, value) => {
     setAttributes(prev => ({
@@ -46,44 +56,7 @@ function CreateMember() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!name || !role || !nationality || !age || !bio) {
-      setError('Please fill in all required fields');
-      return;
-    }
-    
-    if (isNaN(Number(age)) || Number(age) < 16 || Number(age) > 80) {
-      setError('Age must be a number between 16 and 80');
-      return;
-    }
-    
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      // Filter attributes based on role
-      const filteredAttributes = {
-        skill: attributes.skill,
-        experience: attributes.experience,
-        fitness: attributes.fitness,
-        teamwork: attributes.teamwork,
-        focus: attributes.focus
-      };
-
-      // Add role-specific attributes
-      if (role === 'Driver') {
-        filteredAttributes.aggression = attributes.aggression;
-      }
-      if (role === 'Engineer' || role === 'Mechanic' || role === 'Technical Director') {
-        filteredAttributes.technical = attributes.technical;
-      }
-      if (role === 'Strategist') {
-        filteredAttributes.strategy = attributes.strategy;
-      }
-      if (role === 'Team Principal' || role === 'Technical Director') {
-        filteredAttributes.leadership = attributes.leadership;
-      }
-      
-      // Create new team member in Supabase
+    try {      
       const { data, error } = await supabase
         .from('team_members')
         .insert([
@@ -93,34 +66,29 @@ function CreateMember() {
             nationality,
             age: Number(age),
             bio,
-            attributes: filteredAttributes
+            attributes: attributes
           }
         ])
         .select();
-        
-      if (error) throw error;
-      
-      // Navigate to the team page to see all team members
       navigate('/team');
-      
     } catch (error) {
-      setError('Failed to create team member: ' + error.message);
-    } finally {
-      setIsLoading(false);
+      'Failed to create team member: ' + error
     }
   };
 
-  const renderOptions = (options, currentValue, setter) => {
+  const renderRoleOptions = () => {
     return (
       <div className="option-buttons">
-        {options.map(option => (
+        {roleOptions.map(roleOption => (
           <button
-            key={option}
+            key={roleOption.label}
             type="button"
-            className={currentValue === option ? 'option-btn selected' : 'option-btn'}
-            onClick={() => setter(option)}
+            className={role === roleOption.label ? 'option-btn selected' : 'option-btn'}
+            onClick={() => setRole(roleOption.label)}
           >
-            {option}
+            <span className="role-icon">{roleOption.icon}</span>
+            <span className="role-label">{roleOption.label}</span>
+            <span className="role-description">{roleOption.description}</span>
           </button>
         ))}
       </div>
@@ -128,207 +96,113 @@ function CreateMember() {
   };
 
   return (
-    <div className="create-team-member-container">
-      <div className="create-header">
-        <h1>Add Team Member</h1>
-        <Link to="/team" className="team-link">View Team</Link>
+    <div className="main-content">
+      <Link to="/team" className="btn secondary"><ArrowLeft className='icon'/> Back to Team</Link>
+      <form onSubmit={handleSubmit}>
+
+      <div className="header-content">
+        <div className="header-text">
+          <h2>Add Team Member</h2>
+          <p>Create a new member for your F1 team</p>
+        </div>
+        <div className="header-actions">
+        <button
+          type="button" className="btn secondary"
+          onClick={() => {setName(''); setRole(''); setNationality(''); setAge(''); setBio(''); setAttributes({})}}
+        >
+          <X className="icon" /> Reset
+        </button>
+
+          <button type="submit" className="btn primary"><Save className="icon" /> Save</button>
+        </div>
+      </div>
+                
+      <div className="basic-info container">
+        <h2>Basic Information</h2>
+        
+        <div className="form-group">
+          <label htmlFor="name">Full Name</label>
+          <input
+            type="text" id="name" value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Lewis Hamilton"
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="nationality">Nationality</label>
+          <select
+            id="nationality" value={nationality}
+            onChange={(e) => setNationality(e.target.value)}
+            required
+          >
+            <option value="" disabled>Select nationality</option>
+            {countries.map(country => (
+              <option key={country} value={country}>{country}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="age">Age</label>
+          <input
+            type="number" id="age" min="16" max="80" value={age}
+            onChange={(e) => setAge(e.target.value)}
+            placeholder="e.g. 36"
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="bio">Biography</label>
+          <textarea
+            id="bio" rows={4} value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder="Enter a brief biography of this team member..."
+            required
+          />
+        </div>
+      </div>
+        
+      {/* Roles section */}
+      <div className="roles container">
+        <h2>Team Role</h2>
+        <div className="form-group">
+          {renderRoleOptions()}
+        </div>
       </div>
       
-      {error && <div className="error-message">{error}</div>}
-      
-      <div className="team-member-layout">
-        <form onSubmit={handleSubmit} className="team-member-form">
-          <div className="form-group">
-            <label htmlFor="name">Full Name</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Lewis Hamilton"
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Role</label>
-            {renderOptions(roleOptions, role, setRole)}
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="nationality">Nationality</label>
-            <select
-              id="nationality"
-              value={nationality}
-              onChange={(e) => setNationality(e.target.value)}
-              required
-            >
-              <option value="" disabled>Select nationality</option>
-              {countries.map(country => (
-                <option key={country} value={country}>{country}</option>
-              ))}
-            </select>
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="age">Age</label>
-            <input
-              type="number"
-              id="age"
-              min="16"
-              max="80"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              placeholder="e.g. 36"
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="bio">Biography</label>
-            <textarea
-              id="bio"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              placeholder="Enter a brief biography of this team member..."
-              rows={4}
-              required
-            />
-          </div>
-
-          <div className="form-group attributes-section">
-            <h3>Attributes</h3>
-            
-            <div className="attribute-sliders">
-              <div className="attribute-slider">
-                <label>Skill</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={attributes.skill}
-                  onChange={(e) => handleAttributeChange('skill', parseInt(e.target.value))}
-                />
-                <span className="attribute-value">{attributes.skill}</span>
+      {/* Attributes section */}
+      <div className="attributes container">
+        <h2>Attributes</h2>
+        <div className="attribute-sliders">
+          {attributeList.map((attr) => (
+            <div key={attr} className="attribute-slider">
+              <div className="attribute-label-row">
+                <label>{attr.charAt(0).toUpperCase() + attr.slice(1)}</label>
+                <span className="attribute-value">{attributes[attr]}</span>
               </div>
-              
-              <div className="attribute-slider">
-                <label>Experience</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={attributes.experience}
-                  onChange={(e) => handleAttributeChange('experience', parseInt(e.target.value))}
-                />
-                <span className="attribute-value">{attributes.experience}</span>
-              </div>
-              
-              <div className="attribute-slider">
-                <label>Fitness</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={attributes.fitness}
-                  onChange={(e) => handleAttributeChange('fitness', parseInt(e.target.value))}
-                />
-                <span className="attribute-value">{attributes.fitness}</span>
-              </div>
-              
-              <div className="attribute-slider">
-                <label>Teamwork</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={attributes.teamwork}
-                  onChange={(e) => handleAttributeChange('teamwork', parseInt(e.target.value))}
-                />
-                <span className="attribute-value">{attributes.teamwork}</span>
-              </div>
-              
-              <div className="attribute-slider">
-                <label>Focus</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={attributes.focus}
-                  onChange={(e) => handleAttributeChange('focus', parseInt(e.target.value))}
-                />
-                <span className="attribute-value">{attributes.focus}</span>
-              </div>
-              
-              {/* Role-specific attributes */}
-              {role === 'Driver' && (
-                <div className="attribute-slider">
-                  <label>Aggression</label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={attributes.aggression}
-                    onChange={(e) => handleAttributeChange('aggression', parseInt(e.target.value))}
-                  />
-                  <span className="attribute-value">{attributes.aggression}</span>
-                </div>
-              )}
-              
-              {(role === 'Engineer' || role === 'Mechanic' || role === 'Technical Director') && (
-                <div className="attribute-slider">
-                  <label>Technical</label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={attributes.technical}
-                    onChange={(e) => handleAttributeChange('technical', parseInt(e.target.value))}
-                  />
-                  <span className="attribute-value">{attributes.technical}</span>
-                </div>
-              )}
-              
-              {(role === 'Team Principal' || role === 'Technical Director') && (
-                <div className="attribute-slider">
-                  <label>Leadership</label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={attributes.leadership}
-                    onChange={(e) => handleAttributeChange('leadership', parseInt(e.target.value))}
-                  />
-                  <span className="attribute-value">{attributes.leadership}</span>
-                </div>
-              )}
-              
-              {role === 'Strategist' && (
-                <div className="attribute-slider">
-                  <label>Strategy</label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={attributes.strategy}
-                    onChange={(e) => handleAttributeChange('strategy', parseInt(e.target.value))}
-                  />
-                  <span className="attribute-value">{attributes.strategy}</span>
-                </div>
-              )}
+              <input
+                type="range" min="1" max="10"
+                value={attributes[attr]}
+                onChange={(e) => handleAttributeChange(attr, parseInt(e.target.value))}
+              />
+              <p className="attribute-description">{attributeDescriptions[attr]}</p>
             </div>
-          </div>
-          
-          <div className="button-group">
-            <button type="button" className="cancel-btn" onClick={() => navigate('/team')}>
+          ))}
+        </div>
+      </div>
+
+      <div className="button-group">
+            <button type="button" className="btn secondary" onClick={() => navigate('/team')}>
               Cancel
             </button>
-            <button type="submit" className="submit-btn" disabled={isLoading}>
-              {isLoading ? 'Creating...' : 'Create Team Member'}
+            <button type="submit" className="btn primary">
+              Create Team Member
             </button>
           </div>
-        </form>
-      </div>
+      </form>
     </div>
   );
 }
