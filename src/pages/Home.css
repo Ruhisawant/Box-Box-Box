@@ -41,8 +41,6 @@
 
 /* Sections */
 .home-members-section {
-  display: flex;
-  flex-direction: column;
   margin-bottom: 1rem;
 }
 
