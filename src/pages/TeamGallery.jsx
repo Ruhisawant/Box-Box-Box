@@ -101,6 +101,11 @@ function TeamGallery() {
             <Plus className='icon' /> Add Your First Team Member
           </Link>
         </div>
+      ) : filteredMembers.length === 0 ? (
+        <div className='container no-results'>
+          <UsersRound size={48} />
+          <p>No options match your filter</p>
+        </div>
       ) : (
         <div className='members-section'>
           {filteredMembers.map((member) => (

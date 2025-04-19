@@ -1,0 +1,231 @@
+.member-card {
+	background-color: #1e2330;
+	border-radius: 12px;
+	overflow: hidden;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	border: 1px solid #1e2330;
+	max-width: 350px;
+	position: relative;
+	margin-bottom: 30px;
+}
+
+.member-card:hover {
+	transform: translateY(-6px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	border-color: #333d4b;
+}
+
+.member-role-indicator {
+	padding: 10px 16px;
+	font-size: 14px;
+	font-weight: 600;
+	color: white;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	position: relative;
+}
+
+/* Role-specific color coding */
+.icon-driver {
+	background-color: #ef4444;
+	background-image: linear-gradient(90deg, #ef4444, #b91c1c);
+}
+
+.icon-engineer {
+	background-color: #3b82f6;
+	background-image: linear-gradient(90deg, #3b82f6, #1d4ed8);
+}
+
+.icon-mechanic {
+	background-color: #10b981;
+	background-image: linear-gradient(90deg, #10b981, #047857);
+}
+
+.icon-strategist {
+	background-color: #8b5cf6;
+	background-image: linear-gradient(90deg, #8b5cf6, #6d28d9);
+}
+
+.icon-principal {
+	background-color: #f59e0b;
+	background-image: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.icon-technical {
+	background-color: #6366f1;
+	background-image: linear-gradient(90deg, #6366f1, #4f46e5);
+}
+
+.icon-default {
+	background-color: #6b7280;
+	background-image: linear-gradient(90deg, #6b7280, #4b5563);
+}
+
+.member-info {
+	padding: 20px;
+}
+
+.member-info h3 {
+	font-size: 20px;
+	font-weight: 700;
+	margin-bottom: 14px;
+	letter-spacing: 0.25px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.member-info h3::after {
+	content: attr(data-rating);
+	font-size: 14px;
+	background-color: #333d4b;
+	padding: 3px 8px;
+	border-radius: 12px;
+	font-weight: 500;
+	margin-left: auto;
+}
+
+.member-details {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 18px;
+}
+
+.detail {
+	display: flex;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.detail-label {
+	font-weight: 500;
+	color: #9ca3af;
+	margin-right: 6px;
+}
+
+.detail-value {
+	font-weight: 600;
+}
+
+.attribute-highlights {
+	border-top: 1px solid #333d4b;
+	padding-top: 16px;
+	margin-bottom: 16px;
+}
+
+/* Display only the top 3 attributes for summary */
+.attribute {
+	margin-bottom: 12px;
+	position: relative;
+}
+
+.attribute-label {
+	display: flex;
+	justify-content: space-between;
+	font-size: 13px;
+	font-weight: 500;
+	color: #9ca3af;
+	margin-bottom: 6px;
+}
+
+.attribute-value {
+	font-weight: 600;
+}
+
+.attribute-bar {
+	width: 100%;
+	height: 6px;
+	border-radius: 4px;
+	background-color: #252b3c;
+	overflow: hidden;
+}
+
+.attribute-fill {
+	height: 100%;
+	background-color: #3b82f6;
+	border-radius: 4px;
+	transition: width 0.5s ease-out;
+}
+
+.member-strengths {
+	font-size: 13px;
+	color: #9ca3af;
+	margin: 12px 0;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.strength-tag {
+	display: inline-block;
+	background-color: #333d4b;
+	color: #fff;
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	margin-right: 6px;
+	margin-bottom: 6px;
+	border: 1px solid #4b5563;
+}
+
+.member-bottom {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 14px;
+	margin-top: 16px;
+	padding-top: 12px;
+	border-top: 1px solid #333d4b;
+}
+
+.member-date {
+	color: #9ca3af;
+	font-size: 13px;
+}
+
+.member-actions {
+	display: flex;
+	gap: 8px;
+}
+
+.card-btns {
+	padding: 6px 12px;
+	border-radius: 6px;
+	font-weight: 500;
+	font-size: 13px;
+	text-decoration: none;
+	transition: all 0.2s;
+}
+
+.card-btns {
+	background-color: #333d4b;
+	border: 1px solid #333d4b;
+	color: white;
+}
+
+.card-btns:hover {
+	background-color: #0580ff;
+}
+
+/* New badge for high-rated members */
+.member-card[data-rating="9"], 
+.member-card[data-rating="10"] {
+	border-color: #f59e0b;
+}
+
+.member-card[data-rating="9"]::after,
+.member-card[data-rating="10"]::after {
+	content: "Top Talent";
+	position: absolute;
+	top: 12px;
+	right: -30px;
+	transform: rotate(45deg);
+	background-color: #f59e0b;
+	color: #1e293b;
+	font-size: 11px;
+	font-weight: 600;
+	padding: 3px 32px;
+	z-index: 10;
+}

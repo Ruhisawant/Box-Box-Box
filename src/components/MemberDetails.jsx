@@ -130,10 +130,9 @@ function MemberDetails() {
       <div className="title container">
         <div className="left">
           <h2>{member.name}</h2>
-          <div className={`member-role`}>
+          <div className={'member-role'}>
             {member.role}
           </div>
-      {/* fix this */}
         </div>
         <div className="right rating-avg">
           Overall Rating: <span className="highlight">{rating.total}/10</span>

@@ -50,7 +50,7 @@ function MemberForm() {
             })
           }
         } catch (error) {
-          console.error('Error fetching member data:', error.message)
+          'Error fetching member data:', error.message
         }
       }
       
@@ -171,7 +171,7 @@ function MemberForm() {
       
       navigate('/gallery')
     } catch (error) {
-      setError('Error deleting team member: ' + error.message)
+      'Error deleting team member: ', error.message
     }
   }
 
@@ -186,12 +186,10 @@ function MemberForm() {
           <p>{isEditMode ? 'Update existing team member details' : 'Create a new member for your F1 team'}</p>
         </div>
         <div className='header-actions'>
-          <button
-            type='button' className={`btn ${isEditMode ? 'secondary' : 'primary'}`}
-            onClick={() => {
-              if (isEditMode) {
-                navigate(0)
-              } else {
+          {!isEditMode && (
+            <button
+              type='button' className='btn primary'
+              onClick={() => {
                 setName('') 
                 setRole('') 
                 setNationality('') 
@@ -201,12 +199,12 @@ function MemberForm() {
                   skill: 1, experience: 1, fitness: 1, teamwork: 1, focus: 1,
                   strategy: 1, technical: 1, leadership: 1, aggression: 1
                 })
-              }
-            }}
-          >
-            <X className='icon' /> Reset
-          </button>
-          
+              }}
+            >
+              <X className='icon' /> Reset
+            </button>
+          )}
+
           {isEditMode && (
             <button onClick={handleDelete} className='btn primary'>
               Delete Member
@@ -273,13 +271,11 @@ function MemberForm() {
           {attributeList.map(attribute => (
             <div key={attribute} className='attribute-slider'>
               <div className='attribute-label-row'>
-                <label>{attributeDescriptions[attribute]}</label>
+                <label>{attribute.charAt(0).toUpperCase() + attribute.slice(1)}</label>
                 <span className='attribute-value'>{attributes[attribute]}</span>
               </div>
               <input
-                type='range'
-                min='1'
-                max='10'
+                type='range' min='1' max='10'
                 value={attributes[attribute]}
                 onChange={(e) => handleAttributeChange(attribute, Number(e.target.value))}
               />
