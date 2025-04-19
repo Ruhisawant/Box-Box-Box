@@ -13,6 +13,23 @@
   color: #666;
 }
 
+/* Loading and Error States */
+.loading, .error {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin: 2rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.error {
+  color: #e02020;
+  background-color: rgba(224, 32, 32, 0.05);
+}
+
 .metrics-section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -60,6 +77,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.more-link:hover {
+  background-color: #e0e0e0;
 }
 
 .metric-detail {
@@ -96,6 +118,7 @@
   height: 100%;
   background-color: #0055ff;
   border-radius: 4px;
+  transition: width 0.8s ease-in-out;
 }
 
 .performance-grid {
@@ -133,6 +156,7 @@
   height: 100%;
   background-color: #0055ff;
   border-radius: 6px;
+  transition: width 0.8s ease-in-out;
 }
 
 .rating-bar.overall .rating-fill {
@@ -180,10 +204,16 @@
   font-weight: 500;
   display: inline-flex;
   align-items: center;
+  transition: background-color 0.2s;
+}
+
+.btn.primary:hover {
+  background-color: #cc0000;
 }
 
 .chart-container {
   height: 350px;
+  margin-top: 1rem;
 }
 
 .team-balance {
@@ -219,6 +249,7 @@
 .balance-fill {
   height: 100%;
   border-radius: 4px;
+  transition: width 0.8s ease-in-out;
 }
 
 .balance-fill.red {
@@ -255,18 +286,24 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  display: grid;
+  gap: 0.75rem;
 }
 
 .insight {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 4px;
+  padding: 0.75rem;
+  border-radius: 6px;
+  transition: transform 0.2s;
+}
+
+.insight:hover {
+  transform: translateY(-2px);
 }
 
 .insight .icon {
-  margin-right: 0.5rem;
+  margin-right: 0.75rem;
   flex-shrink: 0;
 }
 
@@ -275,9 +312,17 @@
   color: #b38600;
 }
 
+.insight.warning .icon {
+  color: #f8b400;
+}
+
 .insight.info {
   background-color: rgba(0, 85, 255, 0.1);
   color: #0044cc;
+}
+
+.insight.info .icon {
+  color: #0055ff;
 }
 
 .insight.success {
@@ -285,9 +330,36 @@
   color: #2a8800;
 }
 
+.insight.success .icon {
+  color: #38b000;
+}
+
 .empty-insight {
   color: #666;
-  padding: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+/* Tooltip styling for pie chart */
+.recharts-tooltip-wrapper {
+  background-color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.recharts-default-tooltip {
+  background-color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+}
+
+.performance-grid,
+.metrics-section,
+.team-balance {
+  animation: fadeIn 0.5s ease-in;
 }
 
 @media (max-width: 768px) {
@@ -305,5 +377,20 @@
   
   .balance-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .rating-item {
+    grid-template-columns: 1fr 4fr 1fr;
+  }
+}
+
+/* Tablet optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .balance-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .balance-metrics > div:last-child {
+    grid-column: span 2;
   }
 }

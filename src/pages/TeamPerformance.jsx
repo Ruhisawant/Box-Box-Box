@@ -1,34 +1,144 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
   Users, BadgePercent, Trophy, Flag, ChevronRight, 
   Award, Clock, ArrowUpRight
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { supabase } from '../supabase';
 import './TeamPerformance.css';
 
 function TeamPerformance() {
-  const teamMembers = [
-    { id: 1, name: "Lewis Hamilton", role: "driver", experience: 15, rating: 9.5 },
-    { id: 2, name: "George Russell", role: "driver", experience: 5, rating: 8.7 },
-    { id: 3, name: "Adrian Newey", role: "technical_director", experience: 30, rating: 9.8 },
-    { id: 4, name: "Toto Wolff", role: "team_principal", experience: 12, rating: 9.2 },
-    { id: 5, name: "James Allison", role: "engineer", experience: 20, rating: 9.1 },
-    { id: 6, name: "Michael Johnson", role: "mechanic", experience: 8, rating: 8.5 },
-    { id: 7, name: "Sarah Williams", role: "strategist", experience: 10, rating: 8.9 },
-    { id: 8, name: "David Rodriguez", role: "pit_crew", experience: 6, rating: 8.3 }
-  ];
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const teamPerformance = {
-    speed: 8.5,
-    reliability: 7.8,
-    strategy: 8.2,
-    innovation: 9.0,
-    pitCrew: 8.3,
-    overall: 8.4
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('team_members')
+          .select('*');
+          
+        if (error) throw error;
+        setTeamMembers(data || []);
+      } catch (err) {
+        console.error('Error fetching team members:', err.message);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchTeamMembers();
+  }, []);
+
+  // Calculate team performance metrics based on member attributes
+  const calculateTeamPerformance = () => {
+    if (teamMembers.length === 0) {
+      return {
+        speed: 0,
+        reliability: 0,
+        strategy: 0,
+        innovation: 0,
+        pitCrew: 0,
+        overall: 0
+      };
+    }
+
+    // Initialize performance metrics
+    let speed = 0, reliability = 0, strategy = 0, innovation = 0, pitCrew = 0;
+    let totalSpeed = 0, totalReliability = 0, totalStrategy = 0, totalInnovation = 0, totalPitCrew = 0;
+
+    // Calculate metrics based on team member attributes
+    teamMembers.forEach(member => {
+      const attributes = member.attributes || {};
+      
+      // Different roles contribute differently to team metrics
+      switch(member.role) {
+        case 'Driver':
+          speed += (attributes.skill || 0) * 0.8 + (attributes.aggression || 0) * 0.6;
+          reliability += (attributes.focus || 0) * 0.7 + (attributes.experience || 0) * 0.6;
+          strategy += (attributes.strategy || 0) * 0.4;
+          totalSpeed += 1.4;
+          totalReliability += 1.3;
+          totalStrategy += 0.4;
+          break;
+        case 'Engineer':
+          speed += (attributes.technical || 0) * 0.7;
+          reliability += (attributes.skill || 0) * 0.8;
+          innovation += (attributes.technical || 0) * 0.9;
+          totalSpeed += 0.7;
+          totalReliability += 0.8;
+          totalInnovation += 0.9;
+          break;
+        case 'Mechanic':
+          reliability += (attributes.skill || 0) * 0.8;
+          pitCrew += (attributes.skill || 0) * 0.7 + (attributes.focus || 0) * 0.6;
+          totalReliability += 0.8;
+          totalPitCrew += 1.3;
+          break;
+        case 'Strategist':
+          strategy += (attributes.strategy || 0) * 0.9 + (attributes.experience || 0) * 0.5;
+          totalStrategy += 1.4;
+          break;
+        case 'Team Principal':
+          strategy += (attributes.leadership || 0) * 0.6 + (attributes.strategy || 0) * 0.4;
+          innovation += (attributes.leadership || 0) * 0.5;
+          totalStrategy += 1.0;
+          totalInnovation += 0.5;
+          break;
+        case 'Technical Director':
+          innovation += (attributes.technical || 0) * 0.8 + (attributes.leadership || 0) * 0.4;
+          reliability += (attributes.experience || 0) * 0.5;
+          totalInnovation += 1.2;
+          totalReliability += 0.5;
+          break;
+        case 'Pit Crew':
+          pitCrew += (attributes.teamwork || 0) * 0.8 + (attributes.focus || 0) * 0.7;
+          totalPitCrew += 1.5;
+          break;
+        default:
+          // Generic contribution for other roles
+          speed += (attributes.skill || 0) * 0.2;
+          reliability += (attributes.skill || 0) * 0.2;
+          strategy += (attributes.strategy || 0) * 0.2;
+          innovation += (attributes.technical || 0) * 0.2;
+          pitCrew += (attributes.teamwork || 0) * 0.2;
+          totalSpeed += 0.2;
+          totalReliability += 0.2;
+          totalStrategy += 0.2;
+          totalInnovation += 0.2;
+          totalPitCrew += 0.2;
+      }
+    });
+
+    // Calculate final metrics (ensuring we don't divide by zero)
+    const finalSpeed = totalSpeed > 0 ? (speed / totalSpeed) : 0;
+    const finalReliability = totalReliability > 0 ? (reliability / totalReliability) : 0;
+    const finalStrategy = totalStrategy > 0 ? (strategy / totalStrategy) : 0;
+    const finalInnovation = totalInnovation > 0 ? (innovation / totalInnovation) : 0;
+    const finalPitCrew = totalPitCrew > 0 ? (pitCrew / totalPitCrew) : 0;
+
+    // Calculate overall score
+    const overall = (finalSpeed + finalReliability + finalStrategy + finalInnovation + finalPitCrew) / 5;
+
+    return {
+      speed: parseFloat(finalSpeed.toFixed(1)),
+      reliability: parseFloat(finalReliability.toFixed(1)),
+      strategy: parseFloat(finalStrategy.toFixed(1)),
+      innovation: parseFloat(finalInnovation.toFixed(1)),
+      pitCrew: parseFloat(finalPitCrew.toFixed(1)),
+      overall: parseFloat(overall.toFixed(1))
+    };
   };
+
+  const teamPerformance = calculateTeamPerformance();
 
   // Function to get role display name
   const formatRole = (role) => {
+    if (!role) return "Unknown";
     return role
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -36,10 +146,16 @@ function TeamPerformance() {
   };
 
   // Count roles for team composition
-  const roleCount = {};
-  teamMembers.forEach(member => {
-    roleCount[member.role] = (roleCount[member.role] || 0) + 1;
-  });
+  const getRoleCount = () => {
+    const roleCount = {};
+    teamMembers.forEach(member => {
+      const role = member.role || "Unknown";
+      roleCount[role] = (roleCount[role] || 0) + 1;
+    });
+    return roleCount;
+  };
+
+  const roleCount = getRoleCount();
 
   // Prepare data for pie chart
   const pieData = Object.entries(roleCount).map(([role, count]) => ({
@@ -61,19 +177,19 @@ function TeamPerformance() {
   // Calculate team balance metrics
   const calculateTeamBalance = () => {
     const roleWeights = {
-      driver: 0.25,
-      engineer: 0.2,
-      mechanic: 0.15,
-      strategist: 0.15,
-      team_principal: 0.1,
-      technical_director: 0.1,
-      pit_crew: 0.05
+      Driver: 0.25,
+      Engineer: 0.2,
+      Mechanic: 0.15,
+      Strategist: 0.15,
+      "Team Principal": 0.1,
+      "Technical Director": 0.1,
+      "Pit Crew": 0.05
     };
 
     // Check if we have key roles
-    const hasDriver = teamMembers.some(m => m.role === "driver");
-    const hasEngineer = teamMembers.some(m => m.role === "engineer");
-    const hasTeamPrincipal = teamMembers.some(m => m.role === "team_principal");
+    const hasDriver = teamMembers.some(m => m.role === "Driver");
+    const hasEngineer = teamMembers.some(m => m.role === "Engineer");
+    const hasTeamPrincipal = teamMembers.some(m => m.role === "Team Principal");
 
     // Calculate balance score based on role distribution
     let balanceScore = 0;
@@ -99,7 +215,9 @@ function TeamPerformance() {
       });
       
       teamMembers.forEach(member => {
-        actualDistribution[member.role] = (actualDistribution[member.role] || 0) + 1;
+        if (member.role in actualDistribution) {
+          actualDistribution[member.role] = (actualDistribution[member.role] || 0) + 1;
+        }
       });
       
       // Convert counts to percentages
@@ -152,6 +270,14 @@ function TeamPerformance() {
     return "10th";
   };
 
+  if (loading) {
+    return <div className="loading">Loading team data...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Error loading team data: {error}</div>;
+  }
+
   return (
     <div className="main-content">
       <div className="performance-header">
@@ -172,7 +298,7 @@ function TeamPerformance() {
               <Users className="icon" />
               <span className="value">{teamMembers.length}</span>
             </div>
-            <Link to="/team" className="more-link">
+            <Link to="/gallery" className="more-link">
               <ChevronRight className="icon" />
             </Link>
           </div>
@@ -362,31 +488,31 @@ function TeamPerformance() {
               <li className="empty-insight">Add team members to get performance insights</li>
             ) : (
               <>
-                {!teamMembers.some(m => m.role === "driver") && (
+                {!teamMembers.some(m => m.role === "Driver") && (
                   <li className="insight warning">
                     <Award className="icon" />
                     <span>Your team needs at least one driver to compete in races</span>
                   </li>
                 )}
-                {!teamMembers.some(m => m.role === "engineer") && (
+                {!teamMembers.some(m => m.role === "Engineer") && (
                   <li className="insight warning">
                     <Award className="icon" />
                     <span>Adding an engineer would improve your car development</span>
                   </li>
                 )}
-                {!teamMembers.some(m => m.role === "team_principal") && (
+                {!teamMembers.some(m => m.role === "Team Principal") && (
                   <li className="insight warning">
                     <Award className="icon" />
                     <span>A team principal would help with overall management</span>
                   </li>
                 )}
-                {teamMembers.filter(m => m.role === "driver").length > 2 && (
+                {teamMembers.filter(m => m.role === "Driver").length > 2 && (
                   <li className="insight info">
                     <Clock className="icon" />
-                    <span>You have {teamMembers.filter(m => m.role === "driver").length} drivers. F1 teams typically have 2 main drivers.</span>
+                    <span>You have {teamMembers.filter(m => m.role === "Driver").length} drivers. F1 teams typically have 2 main drivers.</span>
                   </li>
                 )}
-                {teamPerformance.pitCrew < 5 && teamMembers.some(m => m.role === "driver") && (
+                {teamPerformance.pitCrew < 5 && teamMembers.some(m => m.role === "Driver") && (
                   <li className="insight info">
                     <ArrowUpRight className="icon" />
                     <span>Your pit crew rating is low. Consider improving this area to reduce pit stop times.</span>
@@ -396,6 +522,29 @@ function TeamPerformance() {
                   <li className="insight success">
                     <Trophy className="icon" />
                     <span>Your team has championship potential! Well-balanced across all departments.</span>
+                  </li>
+                )}
+                {/* Top performer highlight */}
+                {teamMembers.length > 0 && (
+                  <li className="insight success">
+                    <Award className="icon" />
+                    <span>
+                      {(() => {
+                        const topPerformer = [...teamMembers].sort((a, b) => {
+                          const aAttrs = a.attributes || {};
+                          const bAttrs = b.attributes || {};
+                          
+                          const aAvg = Object.values(aAttrs).filter(v => typeof v === 'number').reduce((sum, v) => sum + v, 0) / 
+                                      Object.values(aAttrs).filter(v => typeof v === 'number').length || 0;
+                          const bAvg = Object.values(bAttrs).filter(v => typeof v === 'number').reduce((sum, v) => sum + v, 0) / 
+                                      Object.values(bAttrs).filter(v => typeof v === 'number').length || 0;
+                          
+                          return bAvg - aAvg;
+                        })[0];
+                        
+                        return `${topPerformer.name} is your standout team member with exceptional performance.`;
+                      })()}
+                    </span>
                   </li>
                 )}
               </>

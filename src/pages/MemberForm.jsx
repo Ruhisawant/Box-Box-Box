@@ -291,7 +291,7 @@ function MemberForm() {
           Cancel
         </button>
         <button type="submit" className="btn primary">
-          Create Team Member
+          {!isEditMode ? "Create" : "Update"}
         </button>
       </div>
       </form>

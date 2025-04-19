@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Pencil, Trash2, ArrowLeft } from 'lucide-react'
 import { supabase } from '../supabase';
-// import { getRoleIconClass } from '../components/SummaryCard';
 import './MemberDetails.css';
 
 function MemberDetails() {
